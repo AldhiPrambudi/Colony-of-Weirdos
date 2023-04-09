@@ -1,73 +1,59 @@
 # 4. Bussiness Insight
+
 Pada Business Insight ini kami membuat beberapa variabel dummy dan sedikit merubah bentuk data yang seharusnya terjadi pada stage preprocessing.
 
 ## 4.1. Pengaruh "MIS_Status" (Status Pinjaman) terhadap "ApprovalFY" (Tahun diterimanya Pinjaman)
 
-
 ```python
 plt.figure(figsize=(15,5))
-sns.countplot(data=df,x='ApprovalFY',hue='MIS_Status',   palette = 'afmhot_r', 
+sns.countplot(data=df,x='ApprovalFY',hue='MIS_Status',   palette = 'afmhot_r',
             lw = 1, ec = 'k')
 plt.xticks(rotation=90, ha='right')
 plt.show()
 ```
 
-
-    
 ![png](output_2_0.png)
-    
-
 
 **Keterangan :**<br>
 Dari Informasi diatas dapat dilihat bahawa tingkat gagal bayar (CHGOFF) paling banyak terletak pada tahun "2007" dan hal ini terjadi pada saat dimulainya "great recession 2007 -2009". jadi masuk akal jika tingkat gagal bayar (CHGOFF) tinggi.
+
 - Sumber : https://www.bls.gov/spotlight/2012/recession/
 
 #### Mari kita lihat tingkat gagal bayar berdasarkan State(Negara Bagian) selama tahun "2007"
 
-
 ```python
 plt.figure(figsize=(25,8))
-sns.countplot(data=df[df['ApprovalFY'] == 2007],x='State',hue='MIS_Status',  palette = 'afmhot_r', 
+sns.countplot(data=df[df['ApprovalFY'] == 2007],x='State',hue='MIS_Status',  palette = 'afmhot_r',
             lw = 1, ec = 'k')
 plt.xticks(rotation=90, ha='right')
 plt.show()
 ```
 
-
-    
 ![png](output_5_0.png)
-    
-
 
 **Keterangan :**<br>
 Ternyata terdapat **"State"** (Negara Bagian) yang tingkat gagal bayarnya **(CHGOFF)** cukup signifikan melebihi tingkat berhasil bayar **(P I F)**, terlihat dari plot diatas yaitu state **"CA", "FL", "GA" & "MD"**
 
 #### Mari kita lihat tingkat gagal bayar dari sektor industri selama tahun "2007"
 
-
 ```python
 plt.figure(figsize=(15,5))
-sns.countplot(data=df[df['ApprovalFY'] == 2007],x='NAICS',hue='MIS_Status',  palette = 'afmhot_r', 
+sns.countplot(data=df[df['ApprovalFY'] == 2007],x='NAICS',hue='MIS_Status',  palette = 'afmhot_r',
             lw = 1, ec = 'k')
 plt.xticks(rotation=90, ha='right')
 plt.show()
 ```
 
-
-    
 ![png](output_8_0.png)
-    
-
 
 Ada hal yang menarik disini, terlihat bahwa sector industri **"Healt Care/Social Assistance"** memiliki tingkat gagal bayar yang kecil, yang berarti dari **"sektor industri"** tersebut tidak terlalu banyak mempengaruhi resiko gagal bayar selama resesi ekonomi.
 
 #### Dari penjelasan diatas kita dapat memberikan rekomendasi business jika terjadi resesi: <br>
+
 - SBA perlu menambahkan persyaratan kredit yang lebih ketat, SBA dapat menetapkan standar kredit yang lebih ketat untuk meminimalkan risiko gagal bayar. Persyaratan kredit yang ketat dapat memastikan bahwa hanya bisnis terbaik dari **"State" & "Sektor Industri"** terbaiklah yang memenuhi syarat untuk mendapatkan pinjaman dan lebih mampu membayar kembali pinjaman selama masa resesi ekonomi.
 - Sebagai lembaga pemerintah SBA juga berperan untuk membantu memulihkan ekonomi selama resesi yaitu dengan meningkatkan edukasi keuangan melalui program konseling SBA, seingga dapat meningkatkan edukasi keuangan bagi bisnis kecil untuk membantu mereka memahami risiko dan cara mengelola keuangan mereka selama masa resesi ekonomi. Edukasi keuangan dapat membantu bisnis kecil mengambil keputusan yang lebih baik dalam pengelolaan keuangan mereka dan meminimalkan risiko gagal bayar.
 
 ## 4.2. Pengaruh "MIS_Status" (Status Pinjaman) terhadap "Term" (Jangka Waktu Pinjaman)
-
-
 
 ```python
 #create column
@@ -76,7 +62,7 @@ PIF = df[df['MIS_Status'] == 'P I F']
 
 fig, ax = plt.subplots(1, 1, figsize = (14, 6))
 
-sns.kdeplot(x = 'Term', data = CHGOFF, label = 'Status : Gagal Bayar', 
+sns.kdeplot(x = 'Term', data = CHGOFF, label = 'Status : Gagal Bayar',
             color = '#E49393', fill = True, multiple = 'stack', ax = ax)
 
 sns.kdeplot(x = 'Term', data = PIF, label = 'Status : Lunas',
@@ -92,19 +78,16 @@ ax.legend()
 plt.show()
 ```
 
-
-    
 ![png](output_12_0.png)
-    
-
 
 **Keterangan :**<br>
 dari plot diatas terlihat bahwa tingkat resiko gagal bayar banyak terjadi dijangka waktu **(Term)** yang pendek < 100. hal ini juga menyatakan bahwa semakin lama jangka waktu yang diberikan, semakin besar juga kemungkinan bisnis dapat berkembang dan hal ini dapat mengurangi resiko gagal bayar.
 
-#### Akan tetapi kami menemukan sumber terkait Jangka Waktu **"(Term)"** 
-> sumber : https://www.sba.gov/partners/lenders/7a-loan-program/terms-conditions-eligibility
-- pinjaman yang didukung/dijamin oleh properti biasanya memiliki durasi 25 tahun atau lebih (300 bulan) dan merupakan satu-satunya pinjaman yang diberikan untuk jangka waktu yang begitu lama, sedangkan pinjaman yang tidak dijamin oleh properti biasanya memiliki durasi kurang dari 25 tahun (<300 bulan).sehingga kami melakukan segmentasi terhadap variabel **"Term"** dengan membuat varibael baru bernama **RealEstate**, di mana **"RealEstate" = 1 jika "Term" (≥ 300 bulan) dan "RealEstate" = 0 jika "Term" < 300 bulan.**
+#### Akan tetapi kami menemukan sumber terkait Jangka Waktu **"(Term)"**
 
+> sumber : https://www.sba.gov/partners/lenders/7a-loan-program/terms-conditions-eligibility
+
+- pinjaman yang didukung/dijamin oleh properti biasanya memiliki durasi 25 tahun atau lebih (300 bulan) dan merupakan satu-satunya pinjaman yang diberikan untuk jangka waktu yang begitu lama, sedangkan pinjaman yang tidak dijamin oleh properti biasanya memiliki durasi kurang dari 25 tahun (<300 bulan).sehingga kami melakukan segmentasi terhadap variabel **"Term"** dengan membuat varibael baru bernama **RealEstate**, di mana **"RealEstate" = 1 jika "Term" (≥ 300 bulan) dan "RealEstate" = 0 jika "Term" < 300 bulan.**
 
 ```python
 #membuat kolom realestate
@@ -112,15 +95,11 @@ df['RealEstate'] = 0
 df.loc[df['Term'] >= 300, 'RealEstate'] = 1
 ```
 
-
 ```python
 #cek kolom apakah sudah sesuai
 re = df[['Term', 'RealEstate']]
 re[re['RealEstate']==1].sample(3)
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -135,6 +114,7 @@ re[re['RealEstate']==1].sample(3)
     .dataframe thead th {
         text-align: right;
     }
+
 </style>
 <table border="1" class="dataframe">
   <thead>
@@ -164,9 +144,6 @@ re[re['RealEstate']==1].sample(3)
 </table>
 </div>
 
-
-
-
 ```python
 df1 = df.groupby(['RealEstate', 'MIS_Status']).agg(Jumlah_Peminjam=('LoanNr_ChkDgt', 'count')).reset_index()
 df2 =  df.groupby('RealEstate').agg(Jumlah_Total_Peminjam=('MIS_Status', 'count')).reset_index()
@@ -181,9 +158,6 @@ df_merge['RealEstate'] = df_merge['RealEstate'].replace({0: 'Lainnya', 1: 'Real 
 df_merge
 ```
 
-
-
-
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -197,6 +171,7 @@ df_merge
     .dataframe thead th {
         text-align: right;
     }
+
 </style>
 <table border="1" class="dataframe">
   <thead>
@@ -246,9 +221,6 @@ df_merge
 </table>
 </div>
 
-
-
-
 ```python
 import seaborn as sns
 # Membuat plot
@@ -263,36 +235,29 @@ plt.text(x=-0.20, y=22.77, s='21.77%', ha='center', va='center', fontsize=10)
 plt.text(x=0.20, y=79.23, s='78.23%', ha='center', va='center', fontsize=10)
 plt.text(x=0.80, y=1.12, s='0.12%', ha='center', va='center', fontsize=10)
 plt.text(x=1.20, y=100.88, s='99.88%', ha='center', va='center', fontsize=10)
-plt.yticks(range(0, 120, 10)) 
+plt.yticks(range(0, 120, 10))
 
 
 # Menampilkan plot
 plt.show()
 ```
 
-
-    
 ![png](output_18_0.png)
-    
-
 
 **Keterangan:** <br>
 terlihat bahwa "RealEstate"(Kepemilikan Properti) memiliki tingkat gagal bayar sangat rendah yaitu hanya sebesar 0.13%, ini menandakan bahwa nilai dari properti tersebut seringkali cukup besar untuk menutupi jumlah pokok yang masih belum dibayar, sehingga mengurangi kemungkinan terjadinya gagal bayar.
 
 #### Dari penjelasan diatas kita dapat memberikan rekomendasi business: <br>
+
 - Perusahaan yang dijamin oleh properti (real estate) dengan jangka waktu lebih dari 300 bulan memiliki tingkat gagal bayar yang sangat rendah, hal ini menandakan SBA dapat memberikan dukungan dalam bentuk penjaminan pinjaman untuk membantu perusahaan tersebut. Namun, SBA tetap perlu memonitor kinerja perusahaan dan mengawasi penggunaan dana pinjaman dengan baik. SBA juga dapat memberikan bimbingan dan konseling kepada perusahaan untuk membantu mereka meningkatkan kinerja dan pertumbuhan bisnis mereka.
 
 ## 4.3. Pengaruh State (Negara Bagian) terhadap tingkat gagal bayar (CHGOFF)
-
 
 ```python
 # -- import csv that contain state name
 states = pd.read_csv('states.csv')
 states.head()
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -307,6 +272,7 @@ states.head()
     .dataframe thead th {
         text-align: right;
     }
+
 </style>
 <table border="1" class="dataframe">
   <thead>
@@ -352,9 +318,6 @@ states.head()
 </table>
 </div>
 
-
-
-
 ```python
 # -- percentage of CHGOFF based on state
 gb1 = df[df['MIS_Status'] == 'CHGOFF'].groupby('State').count()[['MIS_Status']].reset_index()
@@ -394,11 +357,12 @@ fig.update_layout(
 fig.show()
 ```
 
-![png](output_23_0.png)
+![jpg](newplot.jpg)
 
 **Keterangan**:<br>
 Berdasarkan visualisasi mapping diatas dapat disimpulkan bahwa setiap **State** (Negara Bagian) memiliki tingkat resiko gagal bayar **(CHGOFF)** yang berbeda, hal ini juga menandakan bahwa ekonomi masing masing **State** berbeda.
 
 #### Dari penjelasan diatas kita dapat memberikan rekomendasi business: <br>
+
 - Mempertimbangkan kondisi ekonomi setiap state. SBA dapat mempertimbangkan kondisi ekonomi setiap state ketika menetapkan persyaratan dan kriteria untuk program penjaminan pinjaman. Ini dapat membantu SBA mengidentifikasi risiko kredit yang berbeda-beda antara state.
 - Membuat laporan risiko kredit berbasis state. SBA dapat membuat laporan risiko kredit berbasis state untuk membantu lender dan pemohon pinjaman memahami risiko kredit yang berbeda-beda antara state. Ini dapat membantu lender dan pemohon pinjaman dalam mengambil keputusan yang lebih baik dan meminimalkan risiko gagal bayar.
