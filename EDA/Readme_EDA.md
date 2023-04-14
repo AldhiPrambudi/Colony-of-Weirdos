@@ -87,12 +87,12 @@ dari plot diatas terlihat bahwa tingkat resiko gagal bayar banyak terjadi dijang
 
 > sumber : https://www.sba.gov/partners/lenders/7a-loan-program/terms-conditions-eligibility
 
-- pinjaman yang didukung/dijamin oleh properti biasanya memiliki durasi 25 tahun atau lebih (300 bulan) dan merupakan satu-satunya pinjaman yang diberikan untuk jangka waktu yang begitu lama, sedangkan pinjaman yang tidak dijamin oleh properti biasanya memiliki durasi kurang dari 25 tahun (<300 bulan).sehingga kami melakukan segmentasi terhadap variabel **"Term"** dengan membuat varibael baru bernama **RealEstate**, di mana **"RealEstate" = 1 jika "Term" (≥ 300 bulan) dan "RealEstate" = 0 jika "Term" < 300 bulan.**
+- pinjaman yang didukung/dijamin oleh properti biasanya memiliki durasi 20 tahun atau lebih (240 bulan) dan merupakan satu-satunya pinjaman yang diberikan untuk jangka waktu yang begitu lama, sedangkan pinjaman yang tidak dijamin oleh properti biasanya memiliki durasi kurang dari 20 tahun (<240 bulan).sehingga kami melakukan segmentasi terhadap variabel **"Term"** dengan membuat varibael baru bernama **RealEstate**, di mana **"RealEstate" = 1 jika "Term" (≥ 240 bulan) dan "RealEstate" = 0 jika "Term" < 240 bulan.**
 
 ```python
 #membuat kolom realestate
 df['RealEstate'] = 0
-df.loc[df['Term'] >= 300, 'RealEstate'] = 1
+df.loc[df['Term'] >= 240, 'RealEstate'] = 1
 ```
 
 ```python
@@ -249,7 +249,7 @@ terlihat bahwa "RealEstate"(Kepemilikan Properti) memiliki tingkat gagal bayar s
 
 #### Dari penjelasan diatas kita dapat memberikan rekomendasi business: <br>
 
-- Perusahaan yang dijamin oleh properti (real estate) dengan jangka waktu lebih dari 300 bulan memiliki tingkat gagal bayar yang sangat rendah, hal ini menandakan SBA dapat memberikan dukungan dalam bentuk penjaminan pinjaman untuk membantu perusahaan tersebut. Namun, SBA tetap perlu memonitor kinerja perusahaan dan mengawasi penggunaan dana pinjaman dengan baik. SBA juga dapat memberikan bimbingan dan konseling kepada perusahaan untuk membantu mereka meningkatkan kinerja dan pertumbuhan bisnis mereka.
+- Perusahaan yang dijamin oleh properti (real estate) dengan jangka waktu lebih dari 240 bulan memiliki tingkat gagal bayar yang sangat rendah, hal ini menandakan SBA dapat memberikan dukungan dalam bentuk penjaminan pinjaman untuk membantu perusahaan tersebut. Namun, SBA tetap perlu memonitor kinerja perusahaan dan mengawasi penggunaan dana pinjaman dengan baik. SBA juga dapat memberikan bimbingan dan konseling kepada perusahaan untuk membantu mereka meningkatkan kinerja dan pertumbuhan bisnis mereka.
 
 ## 4.3. Pengaruh State (Negara Bagian) terhadap tingkat gagal bayar (CHGOFF)
 
