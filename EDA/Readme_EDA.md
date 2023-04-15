@@ -1,4 +1,4 @@
-# 4. Bussiness Insight
+# 4. Business Insight
 
 Pada Business Insight ini kami membuat beberapa variabel dummy dan sedikit merubah bentuk data yang seharusnya terjadi pada stage preprocessing.
 
